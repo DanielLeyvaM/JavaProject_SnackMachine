@@ -1,0 +1,5 @@
+--------- Selected products ---------
+Product: Chocolate 17.5
+Product: Cookies 19.99
+
+Total: 37.489999999999995

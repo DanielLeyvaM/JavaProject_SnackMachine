@@ -39,6 +39,6 @@ public class Snack {
 
    @Override
    public String toString(){
-        return "Snack: {ID: "+this.idSnacks+", Name: "+this.name+", Price: "+this.price+" }";
+        return "Snack: {ID: "+this.idSnacks+", Name: "+this.name+", Price: $"+this.price+" }";
    }
 }

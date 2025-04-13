@@ -1,0 +1,4 @@
+Chocolate,17.50
+Chips,22.00
+Cookies,19.99
+Soda,22.01

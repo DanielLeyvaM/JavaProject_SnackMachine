@@ -1,5 +1,9 @@
 package Snacks;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,18 +16,17 @@ public class Menu {
 
         while(repeat){
             ListSnacks.showSnacks();
-            System.out.println("Select an option: ");
-            System.out.printf("1. Add product to machine\n2. Delete product to machine " +
-                    "\n3. Buy product\n4. Remove product \n5. Show ticket \n6. Exit\n");
+            System.out.printf("1. Add product to machine\n2. Add product to buy list"+
+                        "\n3. Remove product in buy list\n4. Show ticket \n5. Exit\n");
+            System.out.print("Select an option: ");
             int opcion= Integer.parseInt(sc.nextLine());
                 try {
                         switch (opcion) {
                             case 1 -> addToMachine(sc);
-                            case 2 -> deleteToMachine(sc);
-                            case 3 -> addToList(buyList,sc);
-                            case 4 -> removeToList(buyList,sc);
-                            case 5 -> showTicket(buyList);
-                            case 6 -> repeat=exitMenu();
+                            case 2 -> addToList(buyList,sc);
+                            case 3 -> removeToList(buyList,sc);
+                            case 4 -> showTicket(buyList);
+                            case 5 -> repeat=exitMenu(buyList);
                             default -> System.out.println("Invalid option");
                         }
                 } catch(Exception e){
@@ -44,13 +47,13 @@ public class Menu {
         ListSnacks.addSnack(new Snack(name,price));
     }
 
-    public static void deleteToMachine(Scanner sc){
-        System.out.println(" --------- Delete a product --------- ");
-        ListSnacks.showSnacks();
-        System.out.println("Insert id: ");
-        int id= Integer.parseInt(sc.nextLine());
-        ListSnacks.removeSnack(id);
-    }
+//    public static void deleteToMachine(Scanner sc){
+//        System.out.println(" --------- Delete a product --------- ");
+//        ListSnacks.showSnacks();
+//        System.out.println("Insert id: ");
+//        int id= Integer.parseInt(sc.nextLine());
+//        ListSnacks.removeSnack(id);
+//    }
 
     public static void addToList(List<Snack> buyList, Scanner sc){
         System.out.println(" --------- Selected products --------- ");
@@ -83,7 +86,6 @@ public class Menu {
     }
 
     public static void showTicket(List<Snack> buyList){
-        System.out.println(" --------- Ticket of products --------- ");
         String list="";
         double total=0.0;
 
@@ -91,11 +93,29 @@ public class Menu {
             list+="Product: "+s1.getName()+" "+s1.getPrice()+"\n";
             total+= s1.getPrice();
         }
+        list= "--------- Selected products ---------\n"+list+"\nTotal: "+total;
         System.out.println(list);
-        System.out.println("Total: "+total);
+
+        System.out.print("\nConfirm order Y/N: ");
+        Scanner sc =new Scanner(System.in);
+        String option= sc.next().toUpperCase();
+        if(option.compareTo("Y") ==0){
+            //Creating order ticket to Save Buy List
+            Path path = Paths.get("Ticket Order.txt");
+
+            String text = list;
+            try {
+                Files.write(path, text.getBytes());
+                System.out.println("Order ticket has been created");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }else{
+            System.out.println("Returning to menu...");
+        }
     }
 
-    public static boolean exitMenu(){
+    public static boolean exitMenu(List<Snack> buyList){
         return false;
     }
 
